@@ -1,0 +1,16 @@
+.venv/
+.env
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+state/
+.DS_Store
+
+# Unreviewed local assessment pack; redistribution is not established.
+/Workshop Data/
+
+# Local workshop infrastructure files; excluded from participant commits/exports.
+/local-infrastructure/

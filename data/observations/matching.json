@@ -1,0 +1,15 @@
+[
+  {
+    "id": "matching:page1:quantity",
+    "page_ref": {
+      "invoice_id": "matching",
+      "page": 1,
+      "sha256": "149f62980e64074bb4f014d8726a44a7cf04c608d2f8e5fb1496490f36130af7"
+    },
+    "field": "lines.L1.quantity",
+    "value": "10",
+    "confidence": "clear",
+    "excerpt": "L1 Archive boxes | 10 EA | EUR 12.00 | EUR 120.00",
+    "origin": "recorded-page-observation"
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "id": "missing-evidence:page1:quantity",
+    "page_ref": {
+      "invoice_id": "missing-evidence",
+      "page": 1,
+      "sha256": "07850cbc4bfa98f7af8ef4eeb04fbfed9ea2692f72cd9f09d2b2bde1eb6ec820"
+    },
+    "field": "lines.L1.quantity",
+    "value": "",
+    "confidence": "unavailable",
+    "excerpt": "Quantity is [unreadable] in source page.",
+    "origin": "recorded-page-observation"
+  }
+]

@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools==82.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-engineering-workshop"
+version = "0.1.0"
+description = "Credential-free Session 1 invoice workflow starter"
+requires-python = ">=3.11,<3.14"
+dependencies = ["langgraph==1.0.10", "pydantic==2.12.5", "httpx==0.28.1", "pypdfium2==4.30.0", "pillow==12.3.0"]
+
+[project.optional-dependencies]
+dev = ["pytest==9.0.2", "reportlab==4.4.10"]
+
+[project.scripts]
+workshop = "workshop.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src", "."]
+include = ["workshop*", "exercises*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "."]
+testpaths = ["tests"]
+addopts = '-m "not original_scaffold"'
+markers = ["original_scaffold: instructor assertions for the unedited participant starter"]

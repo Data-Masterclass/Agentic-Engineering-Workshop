@@ -1,0 +1,57 @@
+{
+  "version": "synthetic-extraction-v1",
+  "source": "verified-fixture",
+  "invoice_sha256": "a25f9cf438895433dc8812f50dfa39b812884de7932e876d1a34f34b885a3842",
+  "original": {
+    "id": "reading-conflict",
+    "supplier_id": "SUP-001",
+    "invoice_number": "INV-002",
+    "po_id": "PO-002",
+    "bank_account": "DEMO-BANK-001",
+    "currency": "EUR",
+    "net": "120.00",
+    "tax": "22.80",
+    "gross": "142.80",
+    "lines": [
+      {
+        "id": "L1",
+        "description": "Archive boxes",
+        "quantity": "100",
+        "uom": "EA",
+        "unit_price": "12.00",
+        "net": "120.00",
+        "page_ref": {
+          "invoice_id": "reading-conflict",
+          "page": 1,
+          "sha256": "a25f9cf438895433dc8812f50dfa39b812884de7932e876d1a34f34b885a3842"
+        }
+      }
+    ]
+  },
+  "candidate": {
+    "id": "reading-conflict",
+    "supplier_id": "SUP-001",
+    "invoice_number": "INV-002",
+    "po_id": "PO-002",
+    "bank_account": "DEMO-BANK-001",
+    "currency": "EUR",
+    "net": "120.00",
+    "tax": "22.80",
+    "gross": "142.80",
+    "lines": [
+      {
+        "id": "L1",
+        "description": "Archive boxes",
+        "quantity": "100",
+        "uom": "EA",
+        "unit_price": "12.00",
+        "net": "120.00",
+        "page_ref": {
+          "invoice_id": "reading-conflict",
+          "page": 1,
+          "sha256": "a25f9cf438895433dc8812f50dfa39b812884de7932e876d1a34f34b885a3842"
+        }
+      }
+    ]
+  }
+}
