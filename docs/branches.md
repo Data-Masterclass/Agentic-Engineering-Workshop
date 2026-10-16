@@ -13,7 +13,7 @@ Start Session 1 from `main` or `starter/session-1`. Before merging Session 2, fo
 [Move from Session 1 to Session 2](session1-to-session2.md). It saves your work and
 checks that your three exercise files survive unchanged.
 
-After the Session 2 merge, `docs/session2-to-session3.md` explains the next handoff.
+Before merging Session 3, follow [Move from Session 2 to Session 3](session2-to-session3.md). It preserves your code and Session 2 configuration.
 
 Session 2 uses `workshop.session2`, a prepared investigator separate from your
 Session 1 agent. Run its offline wiring check once, then configure and run the

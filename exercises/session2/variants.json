@@ -1,0 +1,4 @@
+[
+  {"id": "baseline", "model": "CONFIGURE_APPROVED_ALIAS"},
+  {"id": "comparison", "model": "CONFIGURE_SECOND_APPROVED_ALIAS"}
+]

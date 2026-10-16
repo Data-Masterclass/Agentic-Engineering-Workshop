@@ -12,5 +12,6 @@ state/
 # Unreviewed local assessment pack; redistribution is not established.
 /Workshop Data/
 
-# Local workshop infrastructure files; excluded from participant commits/exports.
+# Session outputs and instructor-only deployment kit are not participant source.
+/outputs/
 /local-infrastructure/

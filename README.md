@@ -1,13 +1,13 @@
 # Agent Engineering Workshop
 
-**Session 1 starter.** Build the Session 1 invoice investigation by completing three TODOs. Start with [Session 1](docs/session1.md).
+**Session 2 checkpoint.** Compare one prompt change on the same model across two invoice scenarios. Follow [the Session 1 → 2 transition](docs/session1-to-session2.md) before opening [Session 2](docs/session2.md).
 
 ## Workshop flow
 
 | Session | What you do |
 | --- | --- |
 | [Session 1](docs/session1.md) | Build a PDF tool, investigation agent and graph. |
-| Session 2, after merging `starter/session-2` | Run one offline wiring check, then an approved live prompt experiment. |
+| [Session 2](docs/session2.md) | Run one offline wiring check, then an approved live prompt experiment. |
 | Session 3, after merging `starter/session-3` | Read an offline trace demo, then run an approved live change-and-compare experiment and inspect/export its saved results locally. |
 
 First installation: follow [Session 1 setup](docs/session1.md#before-class-install-and-check-the-environment) using Python 3.11, Git and your editor. No account, gateway or key is needed for offline checks. Installation downloads ordinary Python dependencies.

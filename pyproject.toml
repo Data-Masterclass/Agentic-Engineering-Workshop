@@ -19,6 +19,9 @@ workshop = "workshop.cli:main"
 where = ["src", "."]
 include = ["workshop*", "exercises*"]
 
+[tool.setuptools.package-data]
+"workshop.session2" = ["assets/*.pdf", "assets/*.json"]
+
 [tool.pytest.ini_options]
 pythonpath = ["src", "."]
 testpaths = ["tests"]
