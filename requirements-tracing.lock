@@ -1,0 +1,12 @@
+# Optional instructor tracing additions; install the base requirements.lock first.
+# Resolved on Python 3.11, 2026-10-15. No Phoenix server package is installed in the client.
+opentelemetry-api==1.45.1
+opentelemetry-sdk==1.45.1
+opentelemetry-semantic-conventions==0.66b1
+opentelemetry-exporter-otlp-proto-http==1.45.1
+opentelemetry-exporter-http-transport==0.66b1
+opentelemetry-exporter-otlp-common==0.66b1
+opentelemetry-exporter-otlp-proto-common==1.45.1
+opentelemetry-proto==1.45.1
+googleapis-common-protos==1.75.5
+protobuf==7.36.2

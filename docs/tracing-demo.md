@@ -14,4 +14,11 @@ The view projects recognised event types and limited structured metadata. It omi
 
 The generated page is self-contained and uses no scripts or external network assets. Keep source traces and human review reports local unless you separately review their contents for sharing; they contain more data than the projected trace view.
 
-Hosted tracing (for example LangSmith or Langfuse) can be evaluated later if cross-run searches and timed spans become teaching requirements. It is not a workshop dependency and would need a separate decision on instrumentation and what data may leave the laptop.
+On the Session 3 branches, the same viewer also recognises Session 2 tool requests/results, page reads, answers and terminal stops. [Session 3](session3.md) generates matched scripted diagnosis examples and regenerated projected views for export; private argument/evidence text remains omitted.
+
+For Session 3 local diagnosis, use `python -m workshop.session3 context --input
+outputs/session3-demo --output outputs/session3-private-context` and open its
+`index.html`. This separate private view shows the recorded invoice, configured
+prompt, tool arguments/results, validation questions and final answer. It does
+not capture exact API payloads or private reasoning. Keep the detailed directory
+local; the sharing exporter continues to regenerate only restricted views.

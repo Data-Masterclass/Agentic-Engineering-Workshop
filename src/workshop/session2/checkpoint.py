@@ -8,6 +8,7 @@ from typing import TypedDict
 from langgraph.graph import END, START, StateGraph
 from pydantic import BaseModel, ConfigDict, Field
 
+from .. import telemetry
 from ..responses import ResponsesClient
 from ..runtime import Budget
 from .data import DATA_VERSION, POLICY_VERSION, digest
@@ -64,7 +65,22 @@ class State(TypedDict, total=False):
     answer: dict | None
 
 
-def run(packet, client, *, allowance=Decimal("0"), prompt=PROMPT, enabled_tools=None, seconds=120):
+def run(packet, client, *, allowance=Decimal("0"), prompt=PROMPT, enabled_tools=None, seconds=120, trace_label=None):
+    """Optional instructor tracing wraps the unchanged bounded investigation."""
+    with telemetry.session():
+        inputs = {"invoice": packet["invoice"], "prompt": prompt,
+                  "enabled_tools": sorted(ARGUMENTS if enabled_tools is None else enabled_tools),
+                  "mode": "live" if client.live else "scripted", "variant": trace_label}
+        with telemetry.span("Invoice investigation", "CHAIN", inputs) as observation:
+            result = _run(packet, client, allowance=allowance, prompt=prompt, enabled_tools=enabled_tools, seconds=seconds)
+            if result["terminal"] is not None:
+                observation.error("Investigation stopped; see recorded terminal outcome")
+            observation.output({k: result.get(k) for k in ("recommendation", "checks", "association", "answer", "terminal")})
+        telemetry.flush()
+        return result
+
+
+def _run(packet, client, *, allowance, prompt, enabled_tools, seconds):
     """One case, one shared Budget. No labels, private packet or expected answers reach the model."""
     original = copy.deepcopy(packet["invoice"])
     executor = EvidenceTools(packet)
@@ -75,13 +91,34 @@ def run(packet, client, *, allowance=Decimal("0"), prompt=PROMPT, enabled_tools=
     definitions = [t for t in TOOLS if t["name"] in enabled]
     history, trace, call_ids = [], [], set()
     pending = None
+    turn = None
+    turn_number = 0
 
     def validation(state):
-        result = validate(original, executor.evidence)
+        with telemetry.span("Validate invoice", "CHAIN", {"invoice": original, "evidence": executor.evidence}) as observation:
+            result = validate(original, executor.evidence)
+            observation.output(result)
         trace.append({"event": "validation", **copy.deepcopy(result)})
         return {"validation": result}
 
     def investigation(state):
+        nonlocal turn, turn_number
+        turn_number += 1
+        # Graph nodes may execute in copied contexts. Keep the parent span owned
+        # here, activating it separately in each node rather than carrying a
+        # context-manager token across node/thread boundaries.
+        turn = telemetry.start_span("Investigation turn", "CHAIN", {
+            "number": turn_number, "questions": state["validation"]["checks"],
+            "mode": "live" if client.live else "scripted"})
+        with turn.activate():
+            result = investigate(state)
+        if result["stopped"]:
+            turn.output({"answer": result["answer"]})
+            turn.end()
+            turn = None
+        return result
+
+    def investigate(state):
         nonlocal history, pending
         budget.attempt("model", client.cost)
         context = {"invoice": original, "questions": state["validation"]["checks"], "result_schema": Answer.model_json_schema()}
@@ -89,7 +126,13 @@ def run(packet, client, *, allowance=Decimal("0"), prompt=PROMPT, enabled_tools=
             history = [{"role": "user", "content": json.dumps(context)}]
         else:
             history.append({"role": "user", "content": json.dumps({"revalidation": state["validation"]})})
-        output = budget.bounded(lambda: client.response(history, tools=definitions, instructions=prompt))
+        def model_request():
+            with telemetry.span("Investigator request", "LLM", {"messages": history, "instructions": prompt, "tools": definitions,
+                    "mode": "live" if client.live else "scripted"}) as observation:
+                output = client.response(history, tools=definitions, instructions=prompt)
+                observation.output(output)
+                return output
+        output = budget.bounded(telemetry.bound(model_request))
         if len(json.dumps(output).encode()) > 262144:
             raise ValueError("model output exceeds bounds")
         calls = [item for item in output if item["type"] == "function_call"]
@@ -116,15 +159,31 @@ def run(packet, client, *, allowance=Decimal("0"), prompt=PROMPT, enabled_tools=
         return {"request": None, "answer": answer, "stopped": True}
 
     def tool(state):
+        nonlocal turn
+        with turn.activate():
+            result = execute(state)
+        turn.output({"tool": state["request"]["name"], "completed": True})
+        turn.end()
+        turn = None
+        return result
+
+    def execute(state):
         nonlocal pending
         request = state["request"]
         def page_reader(invoice_id, page):
             budget.attempt("model", client.cost)
-            observations = read_page(client, invoice_id, page)
+            with telemetry.span("PDF page read", "LLM", {"page_ref": original["page_ref"], "mode": "live-page-review"}) as observation:
+                observations = read_page(client, invoice_id, page)
+                observation.output(observations)
             budget.remaining()  # A timed-out remote read must never register late evidence.
             trace.append({"event": "page_read", "page_ref": original["page_ref"], "mode": "live-page-review", "observations": observations})
             return observations
-        result = budget.bounded(lambda: executor.execute(request["name"], request["arguments"], page_reader=page_reader if client.live else None))
+        def execute_tool():
+            with telemetry.span(request["name"], "TOOL", request["arguments"]) as observation:
+                result = executor.execute(request["name"], request["arguments"], page_reader=page_reader if client.live else None)
+                observation.output(result)
+                return result
+        result = budget.bounded(telemetry.bound(execute_tool))
         trace.append({"event": "tool_result", "evidence": result})
         history.append({"type": "function_call_output", "call_id": pending, "output": json.dumps(result)})
         pending = None
@@ -148,6 +207,12 @@ def run(packet, client, *, allowance=Decimal("0"), prompt=PROMPT, enabled_tools=
         # Exception text may contain provider payloads. Trace only a safe class.
         terminal = f"investigation stopped: {type(exc).__name__}"
         trace.append({"event": "terminal", "error": terminal})
+        if turn is not None:
+            turn.error(type(exc).__name__)
+            turn.output({"stopped": True})
+    finally:
+        if turn is not None:
+            turn.end()
     result = validate(original, executor.evidence)
     executor.close()
     if terminal:

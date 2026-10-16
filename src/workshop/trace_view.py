@@ -17,7 +17,13 @@ LABELS = {
     "unfinished_tool": "Participant tool remains unfinished",
     "finalization": "Finalize recommendation",
     "startup_or_extraction_failure": "Startup or extraction failed",
+    "tool_requested": "Investigator requests evidence",
+    "tool_result": "Register tool evidence",
+    "page_read": "Read selected PDF page",
+    "answer": "Investigator hands back its answer",
+    "terminal": "Execution stopped",
 }
+KNOWN_TOOLS = {"review_pdf_page", "get_supplier", "search_purchase_orders", "get_purchase_order", "get_receipts", "get_invoice_history"}
 RECOMMENDATIONS = {"READY_FOR_APPROVAL", "NEEDS_CLARIFICATION", "ESCALATE"}
 
 
@@ -75,6 +81,19 @@ def describe(event):
         detail += f"; {len(evidence)} observation(s)"
         detail += f"; {sum(e.get('confidence') == 'clear' for e in evidence)} clear"
         return detail
+    if kind in ("tool_requested", "tool_result"):
+        evidence = event.get("evidence")
+        evidence = evidence if isinstance(evidence, dict) else {}
+        name = event.get("name") if kind == "tool_requested" else evidence.get("tool")
+        name = name if isinstance(name, str) and name in KNOWN_TOOLS else "unrecognised tool"
+        return name if kind == "tool_requested" else f"{name}; {len(objects(evidence.get('records')))} returned record(s)"
+    if kind == "page_read":
+        observations = objects(event.get("observations"))
+        return f"{len(observations)} observation(s); {sum(row.get('confidence') == 'clear' for row in observations)} clear"
+    if kind == "answer":
+        return "Human handoff requested" if event.get("handoff") else "Answer recorded; deterministic validation remains authoritative"
+    if kind == "terminal":
+        return "Run stopped; details remain in the local review report"
     if kind == "findings_applied":
         return changes_text(event.get("changes"))
     if kind == "extraction":
@@ -100,7 +119,7 @@ body{font:16px system-ui;max-width:1050px;margin:32px auto;padding:20px;color:#1
 table{border-collapse:collapse;width:100%;background:white}td,th{padding:12px;border:1px solid #ccd5df;text-align:left;vertical-align:top}
 caption{text-align:left;margin:18px 0;font-weight:bold}p{line-height:1.6}code{background:#e7edf5;padding:2px 5px}
 </style><h1>Workshop workflow trace</h1>
-<p>This local event sequence shows validation, model proposals, PDF review and accepted corrections.
+<p>This local event sequence shows validation, model proposals, evidence tools, PDF review and accepted corrections.
 Model proposals and accepted corrections are separate steps. The original human review report remains the source for evidence citations and the final recommendation.</p>
 <p>Recorded event order only: no span durations or actual provider costs are recorded here.
 Repeated model-result and investigation events can describe the same model operation.

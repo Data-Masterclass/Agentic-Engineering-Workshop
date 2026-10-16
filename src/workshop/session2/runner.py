@@ -62,7 +62,9 @@ def score(result, expected):
 
 def _client(variant, mode, name, index):
     if mode == "scripted":
-        return ScriptedTransport(actions(name, reverse=bool(index)))
+        # Keep the fixed replay identical across variants; prompt edits do not
+        # affect a script, and variant index must not introduce another change.
+        return ScriptedTransport(actions(name))
     if variant.model.startswith("CONFIGURE_"):
         raise ValueError("replace placeholder model aliases before live execution")
     # Gateway URL and key remain in process environment, never configuration/results.
@@ -100,7 +102,7 @@ def experiment(output, variants, *, mode="scripted", labels=None):
     revision = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root, capture_output=True, text=True, check=False).stdout.strip() or "unavailable"
     status = subprocess.run(["git", "status", "--porcelain"], cwd=root, capture_output=True, text=True, check=False)
     dirty = bool(status.stdout.strip()) if status.returncode == 0 else None
-    sources = sorted(module.parent.glob("*.py")) + [module.parents[1] / name for name in ("responses.py", "runtime.py", "schemas.py", "pack.py", "agent.py", "tools.py", "views.py")]
+    sources = sorted(module.parent.glob("*.py")) + [module.parents[1] / name for name in ("telemetry.py", "responses.py", "runtime.py", "schemas.py", "pack.py", "agent.py", "tools.py", "views.py")]
     source_hash = digest({str(path.relative_to(root)): path.read_text() for path in sources})
     dependencies = {name: version(name) for name in ("langgraph", "pydantic", "httpx")}
     (output / "configuration.json").write_text(json.dumps({"mode": mode, "variants": [v.model_dump() for v in variants], "code": revision, "code_dirty": dirty, "implementation_sha256": source_hash, "dependencies": dependencies}, indent=2))
@@ -111,7 +113,7 @@ def experiment(output, variants, *, mode="scripted", labels=None):
             directory.mkdir(parents=True)
             try:
                 client = _client(variant, mode, name, index)
-                result = run(case(name), client, allowance=Decimal(variant.run_allowance_usd), prompt=variant.prompt, enabled_tools=variant.enabled_tools)
+                result = run(case(name), client, allowance=Decimal(variant.run_allowance_usd), prompt=variant.prompt, enabled_tools=variant.enabled_tools, trace_label=variant.id)
             except Exception as exc:
                 # Preserve visible failure rows without copying credentials/error payloads.
                 result = {"terminal": f"setup failed: {type(exc).__name__}", "recommendation": "ESCALATE", "trace": [], "attempts": {"models": 0, "tools": 0}, "elapsed_seconds": None, "actual_cost_usd": None, "reserved_usd": "0", "usage": None, "execution_mode": mode, "checks": [], "evidence": [], "candidate": None, "original": None, "corrections": []}

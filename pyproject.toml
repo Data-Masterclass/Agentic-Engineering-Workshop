@@ -10,6 +10,7 @@ requires-python = ">=3.11,<3.14"
 dependencies = ["langgraph==1.0.10", "pydantic==2.12.5", "httpx==0.28.1", "pypdfium2==4.30.0", "pillow==12.3.0"]
 
 [project.optional-dependencies]
+tracing = ["opentelemetry-sdk==1.45.1", "opentelemetry-exporter-otlp-proto-http==1.45.1"]
 dev = ["pytest==9.0.2", "reportlab==4.4.10"]
 
 [project.scripts]

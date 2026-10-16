@@ -155,7 +155,3 @@ You are done when you can show both paired comparisons, explain what stayed fixe
 and what changed, and state what your evidence can and cannot establish. Keep your
 configuration and results locally in Git-ignored `outputs/`; do not commit results,
 keys or `.env`. Run `python -m pytest -q` for the offline support checks.
-
-## Next session
-
-When you finish, follow [Move from Session 2 to Session 3](session2-to-session3.md).
