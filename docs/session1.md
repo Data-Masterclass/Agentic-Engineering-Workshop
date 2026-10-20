@@ -24,9 +24,21 @@ Windows activation: `.venv\Scripts\activate`. Installation downloads ordinary de
 
 `seed` resets only `state/workshop.sqlite`. `preflight` verifies fixture hashes, selected packets, PDF rendering and a prepared matching LangGraph smoke check. It never evaluates learner TODOs, so it remains useful after edits. Complete setup before class.
 
+## Before coding: think in LangGraph
+
+Start with [Thinking in LangGraph](https://docs.langchain.com/oss/python/langgraph/thinking-in-langgraph) as an introduction to the design approach: begin with the process, identify each step's job, choose shared state, then connect the steps. Use the invoice investigation as your example while reading.
+
+In this exercise:
+
+- [State](https://docs.langchain.com/oss/python/langgraph/graph-api#state) is the case notebook: the current invoice candidate, flagged checks and obtained evidence.
+- [Nodes](https://docs.langchain.com/oss/python/langgraph/graph-api#nodes) do the work: validation, investigation, tool execution, applying findings and finalization. A node can run ordinary Python or call a model.
+- [Edges](https://docs.langchain.com/oss/python/langgraph/graph-api#edges) connect those jobs: fixed transitions continue the process; conditional transitions choose whether to investigate, use a tool, revalidate or finish.
+
+The state and node helpers are supplied. Your graph task connects them with LangGraph's API.
+
 ## The exercise: three TODOs, about 20 minutes
 
-Use `data/invoices/reading-conflict.pdf` throughout: extraction reads quantity 100; the page shows 10. You will write a tool, create an investigation agent and connect the graph. There is no separate workflow-mapping assignment. [Hints](session1-hints.md) provide signatures and a short connection table.
+Use `data/invoices/reading-conflict.pdf` throughout: extraction reads quantity 100; the page shows 10. You will write a tool, create an investigation agent and connect the graph. [Hints](session1-hints.md) provide signatures and a short connection table.
 
 ### 1. Write the PDF review tool (~4 minutes)
 
@@ -40,7 +52,9 @@ Investigation receives an allowlisted view: `original_extraction`, `candidate`, 
 
 ### 3. Wire the graph (~10 minutes)
 
-Complete `build_graph` in `src/workshop/graph.py`. `prepared_graph(nodes)` registers the nodes; you add connections and compile. The provided `nodes.route_investigation` handles tools versus findings and terminal handoff, so routing is part of this TODO rather than a fourth task. Validate first, return page observations to the agent, revalidate accepted findings, and finalize every terminal route. Use conditional edges; no server, Studio or interrupt/resume setup.
+Complete `build_graph` in `src/workshop/graph.py`. `prepared_graph(nodes)` returns a LangGraph `StateGraph` with the five nodes registered. You connect them using [`add_edge`](https://docs.langchain.com/oss/python/langgraph/graph-api#normal-edges) for fixed transitions and [`add_conditional_edges`](https://docs.langchain.com/oss/python/langgraph/graph-api#conditional-edges) for choices based on the current state, then return the [compiled graph](https://docs.langchain.com/oss/python/langgraph/graph-api#compiling-your-graph).
+
+Use `nodes.route_investigation` as the conditional selector after `investigate`: it returns the route for tools, findings or finalization. The [connection table](session1-hints.md#todo-3-wire-the-graph-10-minutes) lists the other supplied selectors. Validate first, return page observations to the investigator, revalidate accepted findings, and finish every terminal route.
 
 ```sh
 workshop check --case reading-conflict
