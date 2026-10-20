@@ -49,14 +49,16 @@ These exercises make recommendations. They do not send email, approve payment or
 
 ## Part 1 · Build an investigation you can explain
 
-**Learn:** separate tool observations, model proposals and deterministic validation.
+**Learn:** express the invoice process using LangGraph state, nodes and edges. Keep tool observations, model proposals and deterministic validation distinct.
+
+**Introduction:** [Thinking in LangGraph](https://docs.langchain.com/oss/python/langgraph/thinking-in-langgraph) shows how to move from a process to a graph. Use it as an introduction to the approach, with the invoice workflow above as your example.
 
 **Explore:** follow the invoice from extracted quantity 100 to page evidence 10. Locate the original extraction, current candidate and correction history. Contrast a matching invoice with an unreadable one: neither needs an invented correction.
 
 ### Your task
 
 1. Open [Session 1: the three TODOs](session1.md#the-exercise-three-todos-about-20-minutes), with the [hints](session1-hints.md) alongside it.
-2. Complete `review_pdf_page` in `src/workshop/tools.py`, `investigate`/`PROMPT` in `src/workshop/agent.py`, and `build_graph` in `src/workshop/graph.py`. Allow about 20 minutes; reading, parsing, validation and routing helpers are supplied.
+2. Complete `review_pdf_page` in `src/workshop/tools.py`, `investigate`/`PROMPT` in `src/workshop/agent.py`, and `build_graph` in `src/workshop/graph.py`. Use the [Graph API guide](https://docs.langchain.com/oss/python/langgraph/graph-api) for state, nodes and edges, and its [conditional edges section](https://docs.langchain.com/oss/python/langgraph/graph-api#conditional-edges) while wiring the graph. Allow about 20 minutes; reading, parsing, validation and routing helpers are supplied.
 3. Follow the Session 1 check commands. Open the printed `review.html` and find the page observation, accepted correction and final checks. Compare the `matching` and `missing-evidence` examples in the shared walkthrough or your own runs.
 4. Save your intentional source edits on your personal branch. Keep credentials and reports out of Git.
 
@@ -161,6 +163,7 @@ Scripted runs establish routing, tool execution and approval/resume; they do not
 ## References when you need them
 
 - [Repository workshop map](../README.md#workshop-flow): where each checkpoint fits.
+- [LangGraph: Thinking in LangGraph](https://docs.langchain.com/oss/python/langgraph/thinking-in-langgraph): an introduction to turning a process into state, nodes and connections.
 - [LangGraph: Workflows and agents](https://docs.langchain.com/oss/python/langgraph/workflows-agents): fixed paths and model-directed decisions.
 - [LangGraph: Graph API](https://docs.langchain.com/oss/python/langgraph/graph-api): state, nodes and edges.
 - [LiteLLM Admin UI](https://docs.litellm.ai/docs/proxy/ui): model-access orientation; no deployment setup is required.

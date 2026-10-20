@@ -37,7 +37,7 @@ In `src/workshop/graph.py`, signature: `build_graph(nodes)`.
 | findings | `nodes.after_findings`: validate or finalize |
 | finalize | END |
 
-Use `add_edge(source, target)` for fixed connections and `add_conditional_edges(source, selector, {route_value: node_name})` for choices. The routing choice is already supplied, so it is not a fourth TODO. `workshop.graph.run` executes with a recursion backstop, retains the last completed state on failure, and always performs deterministic final validation.
+Use [`add_edge(source, target)`](https://docs.langchain.com/oss/python/langgraph/graph-api#normal-edges) for fixed connections and [`add_conditional_edges(source, selector, {route_value: node_name})`](https://docs.langchain.com/oss/python/langgraph/graph-api#conditional-edges) for choices. Pass the supplied selector function to each conditional edge and map its returned route values to the destination nodes. `workshop.graph.run` executes with a recursion backstop, retains the last completed state on failure, and always performs deterministic final validation.
 
 Matching must skip investigation. Page observations return to the agent; accepted findings return to validation. Missing evidence gets an explained handoff. No progress/failure/exhaustion is terminal. Human review stays separate.
 
