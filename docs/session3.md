@@ -161,7 +161,8 @@ only read saved runs.
 
 ## 4. Record your decision
 
-In `exercises/session3/notes.md`, record:
+Use `exercises/session3/notes.md` as a template and save completed notes locally
+under `outputs/`. Record:
 
 - Your change, expected effect and a relevant trace event number.
 - The outcome, remaining gaps, model/tool attempts and elapsed time for both scenarios.
@@ -175,8 +176,14 @@ across a broader evaluation suite. A recommendation still requires human review.
 
 ## 5. Review the sharing export
 
+For the course route, export the saved Session 2 experiment once using the
+command below (skip it if you already created this ZIP above). For the offline
+fallback substitute `outputs/session3-demo`; for an optional new experiment
+substitute its complete output folder, such as `outputs/session3-live`. Always
+use a fresh ZIP name.
+
 ```sh
-python -m workshop.session3 export --input outputs/session3-live --output outputs/session3-share.zip
+python -m workshop.session3 export --input outputs/session2-live --output outputs/session3-share.zip
 ```
 
 Open the ZIP and review its contents before sharing. It contains a limited
