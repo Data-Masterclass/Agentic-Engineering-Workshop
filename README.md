@@ -1,6 +1,8 @@
 # Agent Engineering Workshop
 
-Start with [Session 1 setup](docs/session1.md#before-class-install-and-check-the-environment).
+**Start with the [participant workshop guide](docs/workshop-guide.md)** for the invoice scenario, the full four-Part route, and what you will build, compare and review. Then use the session instructions below for commands.
+
+For installation, follow [Session 1 setup](docs/session1.md#before-class-install-and-check-the-environment).
 `main` contains the Session 1 starter. Keep one clone and your own work; merge
 later checkpoints using the [branch and transition guide](docs/branches.md).
 The links below open each session's published instructions, including files that
