@@ -46,7 +46,8 @@ the editable installation offline if needed:
 python -m pip install --no-index --no-deps --no-build-isolation -e .
 ```
 
-After merging, open `docs/session3.md`. Start with its offline trace demo. The
-experiment in Step 3 makes paid model calls and needs instructor approval;
-inspection and export only read saved results locally. This merge does not grant
-live access.
+After merging, open `docs/session3.md`. Inspect and export the complete saved
+Session 2 experiment without new model calls. If live results are unavailable,
+use the labelled offline fallback and record “prompt effect not measured.” A
+further live experiment is optional and needs separate approval. This merge does
+not grant live access or require another experiment.

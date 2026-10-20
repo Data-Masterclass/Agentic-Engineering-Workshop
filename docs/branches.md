@@ -1,29 +1,31 @@
 # Workshop branches and transitions
 
-Stay on your own participant branch and merge the next starter at each handoff.
-Your saved exercise edits and ignored local results remain in the same clone.
+Keep your work in one clone and merge each next starter. The guides below save
+intentional edits and check that earlier exercise files survive. Ignored local
+configuration and results stay in place; do not discard work to obtain a clean
+status or merge reference answers over it.
 
 | Branch | Exercise |
 | --- | --- |
-| `main` / `starter/session-1` | Build the Session 1 PDF tool, investigation agent and graph. |
-| `starter/session-2` | Adds a separate prepared investigator and two-scenario prompt experiment. |
-| `starter/session-3` | Adds an offline trace demo, a live one-change experiment, inspection and export. |
+| `main` / `starter/session-1` | Build the PDF tool, investigation agent and graph. |
+| `starter/session-2` | Run a prompt comparison with a separate prepared investigator. |
+| `starter/session-3` | Inspect, compare and export the saved experiment. |
+| `starter/session-4` | Inspect lead/specialist delegation and review a draft recommendation. |
 
-Start Session 1 from `main` or `starter/session-1`. Before merging Session 2, follow
-[Move from Session 1 to Session 2](session1-to-session2.md). It saves your work and
-checks that your three exercise files survive unchanged.
+1. Begin with [Session 1 setup](session1.md#before-class-install-and-check-the-environment).
+2. Follow [Session 1 → 2](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-2/docs/session1-to-session2.md), then [Session 2](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-2/docs/session2.md).
+3. Follow [Session 2 → 3](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-2/docs/session2-to-session3.md), then [Session 3](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-3/docs/session3.md). Keep the complete Session 2 experiment and configuration.
+4. Follow [Session 3 → 4](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-4/docs/session3-to-session4.md), then [Session 4](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-4/docs/session4.md).
 
-Before merging Session 3, follow [Move from Session 2 to Session 3](session2-to-session3.md). It preserves your code and Session 2 configuration.
+These links open the guide on the checkpoint where it exists, so you can read it
+before merging. `main` remains the Session 1 code checkpoint. For the prepared
+Sessions 2–4, advanced groups may use the [route starting at Session 2](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-4/docs/advanced-route.md).
 
-Session 2 uses `workshop.session2`, a prepared investigator separate from your
-Session 1 agent. Run its offline wiring check once, then configure and run the
-approved live experiment. Step 4 inspects your own `outputs/session2-live/` results.
+Session 3's `compare`, `context` and `export` inspect saved results without model
+calls. If no live experiment exists, use its labelled offline fallback. Fixed
+scripts cannot measure prompt improvement. A further live experiment is optional
+and needs instructor approval. Session 4's scripted exercise needs no mailbox,
+tracing service or live key and sends nothing.
 
-Session 3 begins with an offline demo for learning to read traces. Its live
-experiment also uses the Session 2 runner; `workshop.session3 compare`, `context`
-and `export` inspect saved results locally without model calls. Prompt improvement
-cannot be measured using fixed offline replies.
-
-The session guides and your own generated results are sufficient for these
-exercises. Live access and spending need instructor approval. Keep `.env`, keys
-and generated results local; [.env.example](../.env.example) describes settings.
+Keep `.env`, keys and generated results local; [.env.example](../.env.example)
+describes settings. Merging a checkpoint does not grant live access.

@@ -1,25 +1,43 @@
 # Agent Engineering Workshop
 
-**Session 2 checkpoint.** Compare one prompt change on the same model across two invoice scenarios. Follow [the Session 1 → 2 transition](docs/session1-to-session2.md) before opening [Session 2](docs/session2.md).
+Start with [Session 1 setup](docs/session1.md#before-class-install-and-check-the-environment).
+`main` contains the Session 1 starter. Keep one clone and your own work; merge
+later checkpoints using the [branch and transition guide](docs/branches.md).
+The links below open each session's published instructions, including files that
+are not present in your checkout until you merge that checkpoint.
 
 ## Workshop flow
 
 | Session | What you do |
 | --- | --- |
-| [Session 1](docs/session1.md) | Build a PDF tool, investigation agent and graph. |
-| [Session 2](docs/session2.md) | Run one offline wiring check, then an approved live prompt experiment. |
-| Session 3, after merging `starter/session-3` | Read an offline trace demo, then run an approved live change-and-compare experiment and inspect/export its saved results locally. |
+| [Session 1](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-1/docs/session1.md) | Build the PDF tool, investigation agent and graph: three coding TODOs. |
+| [Session 2](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-2/docs/session2.md) | Check the prepared investigator offline, then run one approved live prompt comparison on two scenarios. |
+| [Session 3](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-3/docs/session3.md) | Inspect and export the same saved Session 2 experiment; explain whether to keep, reject or defer the change. |
+| [Session 4](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-4/docs/session4.md) | Inspect lead/specialist roles and mock supplier correspondence; approve or reject a manual email draft recommendation. |
 
-First installation: follow [Session 1 setup](docs/session1.md#before-class-install-and-check-the-environment) using Python 3.11, Git and your editor. No account, gateway or key is needed for offline checks. Installation downloads ordinary Python dependencies.
+Advanced groups can [start at Session 2](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-4/docs/advanced-route.md) without
+completing Session 1 TODOs. Sessions 2–4 supply their implementation.
 
-Between sessions, keep your own branch and virtual environment; merge the next starter using the transition guide. Do not create another clone or replace your completed exercise files. [Branch and transition instructions](docs/branches.md) explain the sequence.
+## Setup and results
 
-## Your work and results
+Use Python 3.11, Git and your editor. Follow the setup guide above, then the guide
+for your current session. No account, gateway or key is needed for offline
+checks; dependency installation needs internet access. Keep your environment
+between sessions. Do not replace your exercise files with checkpoint versions.
 
-Session 1 has three TODOs in `src/workshop/tools.py`, `src/workshop/agent.py` and `src/workshop/graph.py`. [The participant brief](docs/participant-brief.md) and [hints](docs/session1-hints.md) explain their contracts. Sessions 2 and 3 use a separate prepared investigator; they preserve your Session 1 code and add no implementation TODOs.
+Live experiments require instructor-approved access, settings and spending.
+Fixed scripted responses check wiring; they do not measure prompt improvements.
+Session 3 inspection and export make no new model calls. A further live experiment
+is optional and needs separate approval.
 
-Offline fixed responses check the workflow; they do not evaluate prompt improvements. Live experiments require instructor-approved access, settings and spending. You use your own generated reports and traces; no private reference files are needed.
+Session 1 writes local reports under `state/`; later sessions use `outputs/`.
+Keep generated results, `.env`, keys and `.venv/` out of Git. Session 4 reports
+contain correspondence and draft text and are not supported by the Session 3
+sharing exporter. Run `python -m pytest -q` for offline support checks; unfinished
+Session 1 TODOs have their own progress checks.
 
-Session 1 writes local reports under `state/`. Sessions 2 and 3 write configuration and results under `outputs/`. Keep generated results, `.env`, keys and `.venv/` out of Git. Run `python -m pytest -q` for offline support checks; unfinished Session 1 TODOs have their own progress checks.
-
-The data is a small [synthetic demonstration pack](docs/data-contract.md). Tools retrieve evidence; prepared validation determines a recommendation for separate human review. The workshop performs no payment or accounting action.
+The [participant brief](docs/participant-brief.md) and [hints](docs/session1-hints.md)
+explain Session 1's contracts. The [synthetic demonstration pack](docs/data-contract.md)
+is for learning. Prepared validation recommends an outcome for separate human
+review. No payment, accounting action or email sending occurs. Session 4 approval
+only permits including the exact draft as a recommended manual follow-up.
