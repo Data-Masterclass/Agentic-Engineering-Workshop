@@ -7,7 +7,8 @@ import re
 import warnings
 
 _active = ContextVar("workshop_instructor_tracer", default=None)
-_provider = None
+_project = ContextVar("workshop_instructor_project", default="workshop-session3")
+_providers = {}
 _warned = False
 ENDPOINT = "http://127.0.0.1:6006/v1/traces"
 HIDDEN = {"apikey", "authorization", "password", "secret", "token", "accesstoken",
@@ -57,11 +58,12 @@ def _notice():
 
 
 def _get_tracer():
-    global _provider
     if os.environ.get("WORKSHOP_TRACING") != "phoenix":
         return None
     try:
-        if _provider is None:
+        project = _project.get()
+        provider = _providers.get(project)
+        if provider is None:
             from opentelemetry.sdk.trace import TracerProvider
             from opentelemetry.sdk.trace.export import BatchSpanProcessor
             from opentelemetry.sdk.resources import Resource
@@ -78,23 +80,26 @@ def _get_tracer():
             exporter = OTLPSpanExporter(endpoint=ENDPOINT, timeout=1,
                 headers={"Content-Type": "application/x-protobuf"}, session=session)
             provider = TracerProvider(resource=Resource({
-                "service.name": "workshop-instructor", "openinference.project.name": "workshop-session3"}))
+                "service.name": "workshop-instructor", "openinference.project.name": project}))
             provider.add_span_processor(BatchSpanProcessor(exporter, max_queue_size=256,
                 max_export_batch_size=32, schedule_delay_millis=500))
-            _provider = provider  # Private provider; never replace global instrumentation.
-        return _provider.get_tracer("workshop.instructor")
+            _providers[project] = provider  # Private providers; no global instrumentation.
+        return provider.get_tracer("workshop.instructor")
     except Exception:
         _notice()
         return None
 
 
 @contextmanager
-def session():
+def session(project=None):
+    # Nested Session 2 investigation inherits its Session 4 caller's project.
+    project_token = _project.set(project or _project.get())
     token = _active.set(_get_tracer())
     try:
         yield
     finally:
         _active.reset(token)
+        _project.reset(project_token)
 
 
 class Observation:
@@ -202,9 +207,9 @@ def bound(fn):
 
 def flush():
     """Bounded explicit flush for short instructor CLI runs; not used per tool."""
-    if _provider is not None and os.environ.get("WORKSHOP_TRACING") == "phoenix":
+    if os.environ.get("WORKSHOP_TRACING") == "phoenix":
         try:
-            return _provider.force_flush(timeout_millis=2000)
+            return all([provider.force_flush(timeout_millis=2000) for provider in _providers.values()])
         except Exception:
             _notice()
     return True

@@ -22,6 +22,7 @@ include = ["workshop*", "exercises*"]
 
 [tool.setuptools.package-data]
 "workshop.session2" = ["assets/*.pdf", "assets/*.json"]
+"workshop.session4" = ["assets/*.json"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src", "."]

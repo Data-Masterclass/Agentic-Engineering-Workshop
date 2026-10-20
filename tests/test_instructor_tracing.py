@@ -28,7 +28,7 @@ def recorded(monkeypatch):
     exporter = InMemorySpanExporter()
     provider = TracerProvider(resource=Resource({"service.name": "offline-test"}))
     provider.add_span_processor(SimpleSpanProcessor(exporter))
-    monkeypatch.setattr(telemetry, "_provider", provider)
+    monkeypatch.setattr(telemetry, "_providers", {"workshop-session3": provider, "workshop-session4": provider})
     monkeypatch.setenv("WORKSHOP_TRACING", "phoenix")
     yield exporter
     provider.shutdown()
@@ -140,7 +140,7 @@ def test_missing_optional_dependency_falls_back(monkeypatch):
             raise ImportError("not installed")
         return original(name, *args, **kwargs)
     monkeypatch.setattr(builtins, "__import__", missing)
-    monkeypatch.setattr(telemetry, "_provider", None)
+    monkeypatch.setattr(telemetry, "_providers", {})
     monkeypatch.setattr(telemetry, "_warned", False)
     monkeypatch.setenv("WORKSHOP_TRACING", "phoenix")
     with pytest.warns(RuntimeWarning):
@@ -166,7 +166,7 @@ def test_export_configuration_ignores_external_endpoints_headers_and_proxies(mon
         captured.update(kwargs)
         return InMemorySpanExporter()
     monkeypatch.setattr(transport, "OTLPSpanExporter", exporter)
-    monkeypatch.setattr(telemetry, "_provider", None)
+    monkeypatch.setattr(telemetry, "_providers", {})
     monkeypatch.setenv("WORKSHOP_TRACING", "phoenix")
     monkeypatch.setenv("OTEL_EXPORTER_OTLP_ENDPOINT", "https://external.invalid")
     monkeypatch.setenv("OTEL_EXPORTER_OTLP_HEADERS", "Authorization=secret")
@@ -174,8 +174,30 @@ def test_export_configuration_ignores_external_endpoints_headers_and_proxies(mon
     assert captured["endpoint"] == "http://127.0.0.1:6006/v1/traces"
     assert captured["headers"] == {"Content-Type": "application/x-protobuf"}
     assert captured["session"].trust_env is False
-    assert telemetry._provider.resource.attributes["openinference.project.name"] == "workshop-session3"
-    telemetry._provider.shutdown()
+    assert telemetry._providers["workshop-session3"].resource.attributes["openinference.project.name"] == "workshop-session3"
+    telemetry._providers["workshop-session3"].shutdown()
+
+
+def test_session4_project_is_inherited_and_session3_default_restored(monkeypatch):
+    pytest.importorskip("opentelemetry.sdk")
+    from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
+    import opentelemetry.exporter.otlp.proto.http.trace_exporter as transport
+    monkeypatch.setattr(transport, "OTLPSpanExporter", lambda **kwargs: InMemorySpanExporter())
+    monkeypatch.setattr(telemetry, "_providers", {})
+    monkeypatch.setenv("WORKSHOP_TRACING", "phoenix")
+    try:
+        with telemetry.session(project="workshop-session4"):
+            with telemetry.session():
+                assert set(telemetry._providers) == {"workshop-session4"}
+                assert telemetry._project.get() == "workshop-session4"
+        with telemetry.session():
+            assert telemetry._project.get() == "workshop-session3"
+        assert set(telemetry._providers) == {"workshop-session3", "workshop-session4"}
+        for name, provider in telemetry._providers.items():
+            assert provider.resource.attributes["openinference.project.name"] == name
+    finally:
+        for provider in telemetry._providers.values():
+            provider.shutdown()
 
 
 def test_terminal_workflow_is_marked_as_error(recorded):

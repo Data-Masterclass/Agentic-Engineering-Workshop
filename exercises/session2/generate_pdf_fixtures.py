@@ -11,7 +11,7 @@ def main():
     assets = Path(__file__).resolve().parents[2] / "src/workshop/session2/assets"
     assets.mkdir(exist_ok=True)
     manifest = {}
-    for name in ("order-gap", "posted-copy"):
+    for name in ("order-gap", "posted-copy", "CP4-101", "CP4-102"):
         path = assets / f"{name}.pdf"
         doc = canvas.Canvas(str(path), pagesize=A4, invariant=True)
         doc.setTitle("Synthetic workshop invoice " + name)
@@ -24,7 +24,7 @@ def main():
         doc.drawString(45, height - 42, "AGENT ENGINEERING WORKSHOP / SYNTHETIC FIXTURE")
         doc.setFillColor(HexColor("#FFFFFF"))
         doc.setFont("Helvetica-Bold", 28)
-        doc.drawString(45, height - 87, "INVOICE" if name == "order-gap" else "INVOICE COPY")
+        doc.drawString(45, height - 87, "INVOICE COPY" if name == "posted-copy" else "INVOICE")
         doc.setFont("Helvetica", 12)
         doc.drawString(45, height - 116, "Invoice number: INV / 204     |     Issue date: 15 October 2026")
         doc.setFillColor(HexColor("#152B3C"))
@@ -40,8 +40,14 @@ def main():
         for x, label in [(54, "Description"), (275, "Quantity"), (340, "Unit"), (400, "Unit price"), (484, "Net EUR")]:
             doc.drawString(x, 452, label)
         doc.setFont("Helvetica", 11)
-        for x, text in [(54, "Calibration kit"), (294, "10"), (340, "units"), (416, "25.00"), (493, "250.00")]:
+        # The unavailable cell is explicit source content, not an OCR challenge.
+        # A small font keeps its literal marker inside the quantity column.
+        for x, text in [(54, "Calibration kit"), (275 if name == "CP4-101" else 294, "[unreadable]" if name == "CP4-101" else "10"), (340, "units"), (416, "25.00"), (493, "250.00")]:
+            if text == "[unreadable]":
+                doc.setFont("Helvetica", 9)
             doc.drawString(x, 414, text)
+            if text == "[unreadable]":
+                doc.setFont("Helvetica", 11)
         doc.setStrokeColor(HexColor("#D7E4E8"))
         doc.line(45, 394, width - 45, 394)
         for y, label, value in [(359, "Net total EUR", "250.00"), (335, "VAT 19% EUR", "47.50"), (300, "Gross total EUR", "297.50")]:

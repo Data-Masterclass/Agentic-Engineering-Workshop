@@ -23,3 +23,25 @@ Missing rows are not proof of absence: coverage explicitly records the scope and
 The missing-evidence page deliberately displays `[unreadable]`; this is an explicit unavailable field, not a difficult OCR benchmark. Its extraction candidate of 100 is unverified, receipt records are unavailable and complete duplicate scope is unavailable. Its PDF is still viewable; the required factual evidence is missing.
 
 Session 1 keeps the raw packet and its source-completeness metadata with prepared validation, outside graph state. The investigation view contains extracted invoice/source identity, sanitized flagged checks/questions, actual PDF observations and accepted correction history. Local files under `Workshop Data/` are ignored by Git and are not part of the exercise fixtures; no automatic import or redistribution permission is implied.
+
+## Session 4 supplier follow-up fixtures
+
+Session 4 reuses the prepared Session 2 investigator and its selected-record
+contract. It adds two one-page sources under `src/workshop/session2/assets/`:
+`CP4-101` explicitly prints `[unreadable]` in the quantity cell, while `CP4-102`
+prints quantity 10 and has selected accepted receipts for six units. The two
+supplier-request scenarios share the same `CP4-101` invoice packet and PDF;
+only the supplied correspondence differs. The posted-copy scenario reuses the
+existing Session 2 fixture. Original Session 1 data and Session 2 PDF hashes are
+preserved.
+
+`src/workshop/session4/assets/correspondence.json` contains fictional sent and
+received messages, a fixed selected scope/as-of, and a separately supplied
+approved contact. It is a local fixture, not a mailbox connection. An empty or
+unrelated selected thread does not establish complete correspondence history.
+A promise to send a legible invoice is not a new readable invoice. Lookup
+provenance and message references support a follow-up recommendation; they do
+not clear invoice checks or authorize changes to source values.
+
+Human review accepts or rejects the exact proposed draft for the local final
+recommendation. No email is sent and no invoice is approved by that decision.

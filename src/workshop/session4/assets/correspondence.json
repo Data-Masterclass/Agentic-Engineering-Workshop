@@ -1,0 +1,87 @@
+{
+  "version": "synthetic-session4-v1",
+  "contact": {
+    "email": "billing@workshop-supplier.example",
+    "reference": "CONTACT-BUYER-1-SUP-1"
+  },
+  "snapshots": {
+    "previous-thread": {
+      "lookup_id": "CORR-101",
+      "buyer_id": "BUYER-1",
+      "supplier_id": "SUP-1",
+      "coverage": "selected",
+      "as_of": "2026-10-19T10:00:00Z",
+      "messages": [
+        {
+          "message_id": "MAIL-101",
+          "thread_id": "THREAD-199",
+          "direction": "sent",
+          "sent_at": "2026-10-15T09:00:00Z",
+          "from": "ap@training-buyer.example",
+          "to": "billing@workshop-supplier.example",
+          "subject": "Legible copy of invoice INV-199",
+          "body": "Hello, please provide a legible copy of invoice INV-199. The quantity on the copy available to us is unreadable. Thank you."
+        },
+        {
+          "message_id": "MAIL-102",
+          "thread_id": "THREAD-199",
+          "direction": "received",
+          "sent_at": "2026-10-15T10:00:00Z",
+          "from": "billing@workshop-supplier.example",
+          "to": "ap@training-buyer.example",
+          "subject": "Re: Legible copy of invoice INV-199",
+          "body": "Hello, a legible copy of invoice INV-199 was provided. Please let us know if you need anything else."
+        }
+      ]
+    },
+    "current-thread": {
+      "lookup_id": "CORR-201",
+      "buyer_id": "BUYER-1",
+      "supplier_id": "SUP-1",
+      "coverage": "selected",
+      "as_of": "2026-10-19T10:00:00Z",
+      "messages": [
+        {
+          "message_id": "MAIL-101",
+          "thread_id": "THREAD-199",
+          "direction": "sent",
+          "sent_at": "2026-10-15T09:00:00Z",
+          "from": "ap@training-buyer.example",
+          "to": "billing@workshop-supplier.example",
+          "subject": "Legible copy of invoice INV-199",
+          "body": "Hello, please provide a legible copy of invoice INV-199. The quantity on the copy available to us is unreadable. Thank you."
+        },
+        {
+          "message_id": "MAIL-102",
+          "thread_id": "THREAD-199",
+          "direction": "received",
+          "sent_at": "2026-10-15T10:00:00Z",
+          "from": "billing@workshop-supplier.example",
+          "to": "ap@training-buyer.example",
+          "subject": "Re: Legible copy of invoice INV-199",
+          "body": "Hello, a legible copy of invoice INV-199 was provided. Please let us know if you need anything else."
+        },
+        {
+          "message_id": "MAIL-201",
+          "thread_id": "THREAD-204",
+          "direction": "sent",
+          "sent_at": "2026-10-19T08:00:00Z",
+          "from": "ap@training-buyer.example",
+          "to": "billing@workshop-supplier.example",
+          "subject": "Legible copy of invoice INV / 204",
+          "body": "Hello, please provide a legible copy of invoice INV / 204. We cannot read the quantity for the Calibration kit line on the copy available to us. Thank you."
+        },
+        {
+          "message_id": "MAIL-202",
+          "thread_id": "THREAD-204",
+          "direction": "received",
+          "sent_at": "2026-10-19T08:30:00Z",
+          "from": "billing@workshop-supplier.example",
+          "to": "ap@training-buyer.example",
+          "subject": "Re: Legible copy of invoice INV / 204",
+          "body": "We will send a legible copy of INV / 204 tomorrow."
+        }
+      ]
+    }
+  }
+}

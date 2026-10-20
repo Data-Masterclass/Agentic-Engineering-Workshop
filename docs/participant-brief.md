@@ -1,5 +1,7 @@
 # Session 1 participant brief
 
+This brief covers the Session 1 coding exercise. See the [workshop flow](../README.md#workshop-flow) for Sessions 2–4, which supply a separate prepared investigator and add no required implementation TODOs. Advanced groups can [start at Session 2](advanced-route.md); [Session 4](session4.md) adds delegation, selected correspondence and draft approval.
+
 Complete **three small TODOs in about 20 minutes**: write the PDF review tool, create the investigation agent, and wire the graph. Basic Python is enough; a coding assistant is optional. Complete [installation/preflight](session1.md#before-class-install-and-check-the-environment) before class. No diagram or workflow-mapping assignment is required.
 
 Use one recoverable invoice: `reading-conflict` reads quantity **100** in extraction, while its source page shows **10** Archive boxes at EUR 12.00 each. Matching and missing-evidence cases are available as additional examples.

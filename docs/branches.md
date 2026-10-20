@@ -8,6 +8,7 @@ Your saved exercise edits and ignored local results remain in the same clone.
 | `main` / `starter/session-1` | Build the Session 1 PDF tool, investigation agent and graph. |
 | `starter/session-2` | Adds a separate prepared investigator and two-scenario prompt experiment. |
 | `starter/session-3` | Adds an offline trace demo, a live one-change experiment, inspection and export. |
+| `starter/session-4` | Adds a lead–correspondence-specialist LangGraph, four scenarios, and human approval of a draft recommendation. |
 
 Start Session 1 from `main` or `starter/session-1`. Before merging Session 2, follow
 [Move from Session 1 to Session 2](session1-to-session2.md). It saves your work and
@@ -27,3 +28,7 @@ cannot be measured using fixed offline replies.
 The session guides and your own generated results are sufficient for these
 exercises. Live access and spending need instructor approval. Keep `.env`, keys
 and generated results local; [.env.example](../.env.example) describes settings.
+
+Before merging Session 4, follow [Move from Session 3 to Session 4](session3-to-session4.md). It preserves earlier exercise and variant edits. Session 4 is based on the Session 3 starter, with no reference answers merged in.
+
+Advanced groups can use the [route starting at Session 2](advanced-route.md). Completing Session 1 TODOs is unnecessary for the prepared Session 2–4 flows. Session 4 supplies completed orchestration: participants inspect, predict, run, and explain; no coding TODOs or real email integration are required.

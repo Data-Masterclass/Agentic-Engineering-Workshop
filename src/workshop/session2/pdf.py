@@ -40,7 +40,7 @@ class PageRead(BaseModel):
 
 def verified_source(invoice_id):
     # Names are fixed before constructing paths; never resolve model-supplied paths.
-    if invoice_id not in ("order-gap", "posted-copy"):
+    if invoice_id not in ("order-gap", "posted-copy", "CP4-101", "CP4-102"):
         raise ValueError("PDF outside synthetic case scope")
     path = ASSETS / f"{invoice_id}.pdf"
     if path.stat().st_size > MAX_PDF_BYTES:
