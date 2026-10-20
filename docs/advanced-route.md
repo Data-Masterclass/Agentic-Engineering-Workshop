@@ -7,8 +7,8 @@ you do not need to complete its three TODOs. Allow about 2.5–3 hours including
 
 ## 1. Install from the Session 2 checkpoint
 
-Use Python 3.11, Git, and your editor. Confirm repository access before class;
-for SSH access use your existing GitHub setup instead of the HTTPS URL below.
+Use Python 3.11, Git, and your editor. This public HTTPS clone needs no GitHub
+login; dependency installation needs internet access.
 Create your own participant branch:
 
 ```sh
@@ -50,8 +50,11 @@ instructor approval; fixed scripts do not evaluate prompt changes.
 ## 3. Diagnose one change — Session 3
 
 Follow [Session 2 → 3](session2-to-session3.md), then [Session 3](session3.md).
-Preserve your prior edits and configuration through the merge. Inspect traces,
-form a hypothesis, and explain one result from evidence. Allow 35–45 minutes.
+Preserve your prior edits, configuration and complete Session 2 experiment through
+the merge. Inspect and export that same experiment without new model calls, then
+explain whether to keep, reject or defer the prompt change. A second live batch
+is optional. Use the labelled offline fallback if no live results exist. Allow
+35–45 minutes.
 
 ## 4. Delegate and review — Session 4
 
