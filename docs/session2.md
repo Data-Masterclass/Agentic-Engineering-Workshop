@@ -74,8 +74,9 @@ Use the instructor's values for `reasoning_effort`, `max_output_tokens`,
 the second prompt identical. These JSON settings override the corresponding
 environment variables. The selected model handles investigation and PDF reading.
 
-A two-model comparison is an optional alternative: keep the prompt and other
-compatible settings matched. Do not change the model and prompt together.
+Keep this course experiment prompt-only on the same model so Session 3 can
+inspect it under its one-change contract. A two-model comparison is a separate
+optional extension; Session 3 comparison does not accept model changes.
 
 ## 3. Run the live experiment
 
@@ -155,3 +156,16 @@ You are done when you can show both paired comparisons, explain what stayed fixe
 and what changed, and state what your evidence can and cannot establish. Keep your
 configuration and results locally in Git-ignored `outputs/`; do not commit results,
 keys or `.env`. Run `python -m pytest -q` for the offline support checks.
+
+## Next session
+
+When you finish, follow [Move from Session 2 to Session 3](session2-to-session3.md).
+
+
+## Next: inspect the same experiment
+
+Keep the complete `outputs/session2-live/` directory, copied configuration and
+hypothesis unchanged for [Session 3](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-3/docs/session3.md). No second live batch
+is required. Follow [Session 2 → 3](session2-to-session3.md) to add its inspection
+and export tools. If live results are unavailable, use Session 3's labelled
+offline fallback; do not claim it measures your prompt change.

@@ -1,8 +1,8 @@
 # Session 3: inspect, improve and share
 
-**Objective:** use a trace to identify one problem, test one change on both
-scenarios, and explain whether the evidence supports keeping it. Finish by
-reviewing an export you could share.
+**Objective:** inspect the prompt comparison saved in Session 2, explain whether
+the evidence supports keeping the change, and review a sharing export. No second
+live experiment is required.
 
 First follow the [Session 3 transition guide](session2-to-session3.md). Your earlier
 code and configuration stay intact. There are no new implementation TODOs.
@@ -20,8 +20,45 @@ is incomplete; `posted-copy` escalates when matching history shows the invoice i
 already recorded. No model or tool can approve an invoice.
 
 Use a new output directory or ZIP name for each run. The trace demo and saved-run
-inspection/export are offline. The experiment in Step 3 makes paid model calls
-and requires instructor approval.
+inspection/export are offline. The optional extension in Steps 2–3 makes paid model
+calls and requires separate instructor approval.
+
+## Course route: inspect your Session 2 experiment
+
+Keep the complete `outputs/session2-live/` experiment and its configuration
+unchanged. It must contain both scenarios and both prompts on the same model,
+with only the candidate prompt changed. Do not combine runs from different
+experiments. If your output folder has another name, substitute it below.
+
+```sh
+python -m workshop.session3 compare --input outputs/session2-live --output outputs/session3-review
+python -m workshop.session3 context --input outputs/session2-live --output outputs/session3-context
+```
+
+Open `outputs/session3-review/comparison.html` and
+`outputs/session3-context/index.html`. These commands make no model calls. Use
+fresh output names on repeat runs. Read the evidence and record the conclusion
+using Step 4 below: keep, reject or defer, with reasons from both scenarios.
+Keep your notes locally with your results under `outputs/`.
+
+Review the restricted sharing export described in Step 5, using this input:
+
+```sh
+python -m workshop.session3 export --input outputs/session2-live --output outputs/session3-share.zip
+```
+
+Open and review the ZIP before sharing; no command uploads anything. You are
+done when you can explain the original hypothesis, the evidence from both
+scenarios, your decision and its limitations. Skip Steps 1–3 for this route.
+
+**If you have no compatible live experiment:** run the offline demo in Step 1,
+then use `outputs/session3-demo` as input to the commands above with fresh output
+names. Record “prompt effect not measured.” Label supplied recordings as recorded
+results, not a fresh execution of your prompt.
+
+**Optional extension:** Steps 2–3 describe a new experiment if time, live access
+and spending are approved. Preserve the original experiment and use fresh
+configuration/output names. It is not required to complete Session 3.
 
 ## 1. Inspect the offline trace demo
 
@@ -51,6 +88,8 @@ The instructor can show timed traces in Phoenix. You do not need to install it;
 your detailed HTML traces are sufficient for the exercise.
 
 ## 2. Choose one change
+
+Optional extension: skip this and Step 3 when following the course route above.
 
 Prepare a local configuration with default settings, including `enabled_tools`,
 expanded so you can edit them:
@@ -152,3 +191,10 @@ You are done when you can explain your change and conclusion using both scenario
 point to supporting trace events, and open the reviewed ZIP. Run
 `python -m pytest -q` for the offline support checks. Keep your earlier TODOs and
 tests intact.
+
+
+## Next session
+
+Read [Session 3 → 4](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-4/docs/session3-to-session4.md) before merging the next
+checkpoint, then follow [Session 4](https://github.com/Data-Masterclass/Agentic-Engineering-Workshop/blob/starter/session-4/docs/session4.md). Keep your earlier work
+and saved results in this clone.
